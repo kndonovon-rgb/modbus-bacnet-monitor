@@ -1,0 +1,92 @@
+{
+  "database": "dcmon.db",
+  "interval": 10,
+  "points": [
+    {
+      "name": "meter.voltage_an",
+      "description": "UPS-A input, phase A-N",
+      "driver": "modbus",
+      "host": "127.0.0.1",
+      "port": 5020,
+      "unit": 1,
+      "table": "holding",
+      "documented": 40001,
+      "type": "f32",
+      "word_order": "low_first",
+      "units": "V",
+      "rule": {
+        "direction": "below",
+        "trip": 456.0,
+        "clear": 465.0,
+        "strikes": 3,
+        "max_age": 120,
+        "description": "phase A-N under 95% of 480 V nominal"
+      }
+    },
+    {
+      "name": "meter.kw_total",
+      "description": "UPS-A output, total real power",
+      "driver": "modbus",
+      "host": "127.0.0.1",
+      "port": 5020,
+      "documented": 40005,
+      "type": "f32",
+      "word_order": "low_first",
+      "units": "kW",
+      "rule": {
+        "direction": "above",
+        "trip": 180.0,
+        "clear": 170.0,
+        "strikes": 2,
+        "max_age": 120,
+        "description": "UPS-A above 80% of 225 kW module rating"
+      }
+    },
+    {
+      "name": "meter.frequency",
+      "driver": "modbus",
+      "host": "127.0.0.1",
+      "port": 5020,
+      "documented": 40007,
+      "type": "u16",
+      "scale": 0.01,
+      "units": "Hz"
+    },
+    {
+      "name": "ahu1.supply_air_temp",
+      "description": "AHU-1 discharge",
+      "driver": "bacnet",
+      "host": "127.0.0.1",
+      "port": 47808,
+      "object_type": "analog-input",
+      "instance": 1,
+      "check_flags": true,
+      "units": "degF",
+      "rule": {
+        "direction": "above",
+        "trip": 60.0,
+        "clear": 57.0,
+        "strikes": 2,
+        "max_age": 90,
+        "description": "discharge air above setpoint + 5"
+      }
+    },
+    {
+      "name": "ahu1.return_air_temp",
+      "driver": "bacnet",
+      "host": "127.0.0.1",
+      "port": 47808,
+      "object_type": "analog-input",
+      "instance": 2,
+      "units": "degF",
+      "rule": {
+        "direction": "above",
+        "trip": 80.0,
+        "clear": 77.0,
+        "strikes": 2,
+        "max_age": 90,
+        "description": "return air high — check load and airflow"
+      }
+    }
+  ]
+}
